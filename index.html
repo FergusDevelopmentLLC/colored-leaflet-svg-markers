@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset=utf-8 />
+    <title>Hotspots near Sloan's Lake, Denver, CO</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <style>
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: whitesmoke;
+            font-family: "Noto Sans", sans-serif;
+            color: #3d3d3d;
+        }
+
+        section {
+            width: 960px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            width: 960px;
+            margin: 20px auto;
+            font-family: "Lora", serif;
+            letter-spacing: .04em;
+        }
+
+        h2 {
+            font-family: "Lora", serif;
+            letter-spacing: .04em;
+        }
+
+        p {
+            font-size: 1em;
+            line-height: 1.5em;
+        }
+
+        a {
+            color: #005daa;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        #map {
+            width: 960px;
+            height: 540px;
+            margin: 10px auto;
+            border: 2px solid #d3d3d3;
+        }
+
+        .icon-restaurant {
+            background-color: #E74C3C;
+        }
+
+        .icon-park {
+            background-color: #138D75;
+        }
+
+        .icon-teahouse {
+            background-color: #BA4A00;
+        }
+
+        .icon-bakery {
+            background-color: #F5B041;
+        }
+
+        .icon-theatre {
+            background-color: #A569BD;
+        }
+
+        .icon:hover {
+            opacity: .8;
+        }
+
+        .leaflet-popup-content h3 {
+            font-family: "Lora", serif;
+            font-size: 1.3em;
+            margin-bottom: 6px;
+        }
+        .leaflet-popup-content p {
+            margin: 3px 0 6px;
+            font-size: 1.1em;
+        }
+        .leaflet-popup-content a {
+            font-weight: normal;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Hotspots near Sloan's Lake. Denver, CO</h1>
+
+    <div id='map'></div>
+
+
+    <section>
+
+        <p>Map authored by Will Carter, May 2017</p>
+
+        <p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus.</p>
+
+    </section>
+
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+    <script>
+
+        var map = L.map('map', {
+            center: [39.751585, -105.051812],
+            zoom: 14,
+        });
+
+        var tiles = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        });
+        map.addLayer(tiles);
+
+        var hotspots = [
+          {
+            name: "Happy Leaf Kombucha",
+            properties: {
+                description: "Kombucha tea brewery & taproom offering tastings, health-focused snacks & occasional live music.",
+                coordinates: [39.752772, -105.059755],
+                url: 'http://www.happyleafkombucha.com/',
+                phone: '(720) 708-4954',
+                type: 'teahouse'
+            }
+          },
+          {
+            name: "Shiso Sushi",
+            properties: {
+                description: "Pretty good sushi place for the price.",
+                coordinates: [39.750515, -105.053715],
+                url: 'http://www.tennstreetcoffee.com/',
+                phone: '(303) 455-0279',
+                type: 'restaurant'
+            }
+          },
+          {
+            name: "Alamo Drafthouse Sloans Lake",
+            properties: {
+                description: "Just opened movie theater. I have not visited myself.",
+                coordinates: [39.740591, -105.042528],
+                url: 'https://drafthouse.com/theater/sloans-lake',
+                phone: '720-577-4720',
+                type: 'theatre'
+            }
+          },
+          {
+            name: "Sloan's Lake Park",
+            properties: {
+                description: "Nice city park with a lake.",
+                coordinates: [39.752681, -105.048090],
+                type: 'park'
+
+            }
+          },
+          {
+            name: "Rise & Shine Biscuit Kitchen and Cafe",
+            properties: {
+                description: "Newish cafe and coffee shop offering southern style biscuits.",
+                coordinates: [39.758390, -105.052748],
+                url: 'http://www.riseandshinedenver.com',
+                phone: '(720) 855-0540',
+                type: 'bakery'
+              }
+          }
+        ];
+
+        for (var i = 0; i < hotspots.length; i++) {
+
+            var props = hotspots[i].properties;
+
+            var popup = "";
+
+            if(hotspots[i].name)
+              popup += "<h3>" + hotspots[i].name + "</h3>";
+
+            if(props.description)
+              popup += "<p>" + props.description + "</p>";
+
+            if(props.url)
+              popup += "<p><b>website</b>: <a href='" + props.url + "'>" + props.url + "</a></p>";
+
+            if(props.phone)
+              popup += "<p><b>phone</b>: " + props.phone + "</p>";
+
+            var icon = L.icon({
+                iconUrl: 'svgs/' + props.type + '-15.svg', //'svgs/bakery-15.svg'
+                className: 'icon' + '-' + props.type, //icon-restaurant
+                iconSize: [40, 40],
+                popupAnchor: [0, -22]
+            });
+
+            $.get('svgs/' + props.type + '-15.svg', function(data) {
+               console.log("-----------------------" + data + "--------------------");
+            }, 'text');
+
+            var marker = L.marker(hotspots[i].properties.coordinates, {
+               icon: icon
+            }).addTo(map).bindPopup(popup);
+
+
+           marker.on('mouseover', function(){
+                this.openPopup();
+            });
+            marker.on('mouseout', function(){
+                this.closePopup();
+            });
+
+            //https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
+        };
+
+    </script>
+
+</body>
+
+</html>
