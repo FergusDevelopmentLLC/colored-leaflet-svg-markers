@@ -197,8 +197,8 @@
 
             popup_html = popup_html + getPopupFrom(props);
 
-            //$.get('svgs/' + props.type + '-15.svg', function(data) {
-            $.get(props.svg_url, function(data) {
+            $.get('svgs/' + props.type + '-15.svg', function(data) {
+            //$.get(props.svg_url, function(data) {
 
               var svg_code = data;
               svg_code = svg_code.split('<!-- Code injected by live-server -->')[0];//remove reload code injected by live server
@@ -228,6 +228,12 @@
             //why only one works?
               //has to do with doing everything in the jQuery $.get
               //populate an array first, then pass array of them to marker placer function?
+            //is this worth it?
+
+            //how to get around error:
+            //XMLHttpRequest cannot load http://imgh.us/park-15.svg. No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://bl.ocks.org' is therefore not allowed access.
+              //when i use a web accessable svg file...
+              //http://imgh.us/park-15.svg
 
             // var marker = L.marker(props.coordinates, {
             //    icon: icon
