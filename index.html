@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
     <style>
 
         body {
@@ -101,7 +103,7 @@
 </head>
 
 <body>
-    <h1>Hotspots near Sloan's Lake. Denver, CO</h1>
+    <h1>Hotspots Near Sloan's Lake. Denver, CO</h1>
 
     <div id='map'></div>
 
@@ -110,11 +112,11 @@
 
         <p>Map authored by Will Carter, May 2017</p>
 
-        <p>Additional information about <a href="#">the data</a> and map goes here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis urna magna, maximus nec laoreet sit amet, dictum ultricies nibh. Ut id auctor lacus. Nam a dolor et justo luctus.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. He was no more than a baby then. Well he seemed broken hearted. Something within him. But the moment that I first laid eyes on him all alone. On the edge of seventeen. Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 
     </section>
 
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+
     <script>
 
         var map = L.map('map', {
@@ -180,23 +182,16 @@
           }
         ];
 
-        for (var i = 0; i < hotspots.length; i++) {
+        for (var i = 0; i < 1; i++) {
 
             var props = hotspots[i].properties;
 
-            var popup = "";
+            var popup_html = "";
 
             if(hotspots[i].name)
-              popup += "<h3>" + hotspots[i].name + "</h3>";
+              popup_html += "<h3>" + hotspots[i].name + "</h3>";
 
-            if(props.description)
-              popup += "<p>" + props.description + "</p>";
-
-            if(props.url)
-              popup += "<p><b>website</b>: <a href='" + props.url + "'>" + props.url + "</a></p>";
-
-            if(props.phone)
-              popup += "<p><b>phone</b>: " + props.phone + "</p>";
+            popup_html = popup_html + getPopupFrom(props);
 
             var icon = L.icon({
                 iconUrl: 'svgs/' + props.type + '-15.svg', //'svgs/bakery-15.svg'
@@ -206,24 +201,64 @@
             });
 
             $.get('svgs/' + props.type + '-15.svg', function(data) {
-               console.log("-----------------------" + data + "--------------------");
+              var svg_code = data;
+              svg_code = svg_code.split('<!-- Code injected by live-server -->')[0];//remove reload code injected by live server
+
+              var pathFillColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+              svg_code = svg_code.replace('rgba(17,34,51,0.88)',pathFillColor);
+              //instead of this, get it from the css
+              //https://stackoverflow.com/questions/6338217/get-a-css-value-with-javascript
+
+              console.log(svg_code);
+
+              var marker = L.marker(props.coordinates  , {
+                icon: L.divIcon({
+                  html: svg_code,
+                  className: 'icon' + '-' + props.type, //icon-restaurant,
+                  iconSize: [40, 40],
+                  popupAnchor: [0, -22]
+                })
+              }).addTo(map);
+
             }, 'text');
 
-            var marker = L.marker(hotspots[i].properties.coordinates, {
-               icon: icon
-            }).addTo(map).bindPopup(popup);
+            //based on
+              //https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color
 
+            //why is it small?
+            //why only one works?
+              //has to do with doing everything in the jQuery $.get
+              //populate an array first, then pass array of them to marker placer function?
 
-           marker.on('mouseover', function(){
-                this.openPopup();
-            });
-            marker.on('mouseout', function(){
-                this.closePopup();
-            });
+            // var marker = L.marker(props.coordinates, {
+            //    icon: icon
+            // }).addTo(map).bindPopup(popup_html);
+            //
+            // marker.on('mouseover', function(){
+            //     this.openPopup();
+            // });
+            //
+            // marker.on('mouseout', function(){
+            //     this.closePopup();
+            // });
 
-            //https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color
-            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String
         };
+
+        function getPopupFrom(props){
+
+          var popup = "";
+
+          if(props.description)
+            popup += "<p>" + props.description + "</p>";
+
+          if(props.url)
+            popup += "<p><b>website</b>: <a href='" + props.url + "'>" + props.url + "</a></p>";
+
+          if(props.phone)
+            popup += "<p><b>phone</b>: " + props.phone + "</p>";
+
+          return popup;
+        }
 
     </script>
 
