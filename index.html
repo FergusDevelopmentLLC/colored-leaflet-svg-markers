@@ -93,7 +93,7 @@
     <script>
 
         var map = L.map('map', {
-            center: [39.751585, -105.051812],
+            center: [39.747503, -105.046346],
             zoom: 14,
         });
 
@@ -176,54 +176,54 @@
           popup_html = popup_html + getPopupFrom(props);
 
           // START, get svg code from object property
-          // var svg_code = props.svg_code.replace('rgba(17,34,51,0.88)',props.color);
-          // svg_code = svg_code.replace('width="27"><title>','width="27" transform="scale(1.41)"><title>');//hacky, scale the svg code
-          // var marker = L.marker(props.coordinates  , {
-          //   icon: L.divIcon({
-          //     html: svg_code,
-          //     className: 'icon' + '-' + props.type, //icon-restaurant,
-          //     iconSize: [40, 40],
-          //     popupAnchor: [0, -22]
-          //   })
-          // }).addTo(map).bindPopup(popup_html);
-          //
-          // marker.on('mouseover', function(){
-          //   this.openPopup();
-          // });
-          //
-          // marker.on('mouseout', function(){
-          //   this.closePopup();
-          // });
+          var svg_code = props.svg_code.replace('rgba(17,34,51,0.88)',props.color);
+          svg_code = svg_code.replace('width="27"><title>','width="27" transform="scale(1.41)"><title>');//hacky, scale the svg code
+          var marker = L.marker(props.coordinates  , {
+            icon: L.divIcon({
+              html: svg_code,
+              className: 'icon' + '-' + props.type, //icon-restaurant,
+              iconSize: [40, 40],
+              popupAnchor: [0, -22]
+            })
+          }).addTo(map).bindPopup(popup_html);
+
+          marker.on('mouseover', function(){
+            this.openPopup();
+          });
+
+          marker.on('mouseout', function(){
+            this.closePopup();
+          });
           // END, get svg code from object property
 
 
 
           //START, get svg code from svg in svgs folder
-          $.get('svgs/' + props.type + '-15.svg', function(data) {
-
-            var svg_code = data;
-
-            svg_code = svg_code.split('<!-- Code injected by live-server -->')[0];//remove reload code injected by live server
-            svg_code = svg_code.replace('rgba(17,34,51,0.88)',props.color); //replace the color in the svg code
-            svg_code = svg_code.replace('width="27"><title>','width="27" transform="scale(1.41)"><title>');//hacky, scale the svg code to get icon 40x40
-
-            var marker = L.marker(props.coordinates  , {
-              icon: L.divIcon({
-                html: svg_code,
-                className: 'icon' + '-' + props.type, //icon-restaurant,
-                iconSize: [40, 40],
-                popupAnchor: [0, -22]
-              })
-            }).addTo(map).bindPopup(popup_html);
-
-            marker.on('mouseover', function(){
-              this.openPopup();
-            });
-
-            marker.on('mouseout', function(){
-              this.closePopup();
-            });
-          }, 'text');
+          // $.get('svgs/' + props.type + '-15.svg', function(data) {
+          //
+          //   var svg_code = data;
+          //
+          //   svg_code = svg_code.split('<!-- Code injected by live-server -->')[0];//remove reload code injected by live server
+          //   svg_code = svg_code.replace('rgba(17,34,51,0.88)',props.color); //replace the color in the svg code
+          //   svg_code = svg_code.replace('width="27"><title>','width="27" transform="scale(1.41)"><title>');//hacky, scale the svg code to get icon 40x40
+          //
+          //   var marker = L.marker(props.coordinates  , {
+          //     icon: L.divIcon({
+          //       html: svg_code,
+          //       className: 'icon' + '-' + props.type, //icon-restaurant,
+          //       iconSize: [40, 40],
+          //       popupAnchor: [0, -22]
+          //     })
+          //   }).addTo(map).bindPopup(popup_html);
+          //
+          //   marker.on('mouseover', function(){
+          //     this.openPopup();
+          //   });
+          //
+          //   marker.on('mouseout', function(){
+          //     this.closePopup();
+          //   });
+          // }, 'text');
           //END, get svg code from svg in svgs folder
 
         });
