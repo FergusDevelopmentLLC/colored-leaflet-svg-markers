@@ -138,7 +138,8 @@
                 coordinates: [39.752772, -105.059755],
                 url: 'http://www.happyleafkombucha.com/',
                 phone: '(720) 708-4954',
-                type: 'teahouse'
+                type: 'teahouse',
+                svg_url: 'http://imgh.us/park-15.svg'
             }
           },
           {
@@ -148,7 +149,8 @@
                 coordinates: [39.750515, -105.053715],
                 url: 'http://www.tennstreetcoffee.com/',
                 phone: '(303) 455-0279',
-                type: 'restaurant'
+                type: 'restaurant',
+                svg_url: 'http://imgh.us/park-15.svg'
             }
           },
           {
@@ -158,7 +160,8 @@
                 coordinates: [39.740591, -105.042528],
                 url: 'https://drafthouse.com/theater/sloans-lake',
                 phone: '720-577-4720',
-                type: 'theatre'
+                type: 'theatre',
+                svg_url: 'http://imgh.us/park-15.svg'
             }
           },
           {
@@ -166,8 +169,8 @@
             properties: {
                 description: "Nice city park with a lake.",
                 coordinates: [39.752681, -105.048090],
-                type: 'park'
-
+                type: 'park',
+                svg_url: 'http://imgh.us/park-15.svg'
             }
           },
           {
@@ -177,7 +180,8 @@
                 coordinates: [39.758390, -105.052748],
                 url: 'http://www.riseandshinedenver.com',
                 phone: '(720) 855-0540',
-                type: 'bakery'
+                type: 'bakery',
+                svg_url: 'http://imgh.us/park-15.svg'
               }
           }
         ];
@@ -193,14 +197,9 @@
 
             popup_html = popup_html + getPopupFrom(props);
 
-            var icon = L.icon({
-                iconUrl: 'svgs/' + props.type + '-15.svg', //'svgs/bakery-15.svg'
-                className: 'icon' + '-' + props.type, //icon-restaurant
-                iconSize: [40, 40],
-                popupAnchor: [0, -22]
-            });
+            //$.get('svgs/' + props.type + '-15.svg', function(data) {
+            $.get(props.svg_url, function(data) {
 
-            $.get('svgs/' + props.type + '-15.svg', function(data) {
               var svg_code = data;
               svg_code = svg_code.split('<!-- Code injected by live-server -->')[0];//remove reload code injected by live server
 
