@@ -7,23 +7,19 @@ seems like is it should work.
 based on
 https://stackoverflow.com/questions/23567203/leaflet-changing-marker-color
 
-#### when running on localhost?
+![alt text](http://storage4.static.itmages.com/i/17/0530/h_1496167155_7515688_434b7e7677.png)
 
-![alt text](http://storage5.static.itmages.com/i/17/0530/h_1496116404_5947757_4bf6e4a11c.png "random color on refresh, only last one in array?")
+#### Issues
 
-  1. why is it small, wrong size?
+1. Feels hacky...
+```javascript
+var svg_code = props.svg_code.replace('rgba(17,34,51,0.88)',props.color);
+svg_code = svg_code.replace('width="27"><title>','width="27" transform="scale(1.41)"><title>');//hacky, scale the svg code
+```
+2. Scaling doesn't work on firefox...
+![alt text](http://storage7.static.itmages.com/i/17/0530/h_1496167571_9704904_123ff3edf3.png)
 
-  2. why does only one work?
-    has to do with doing everything in the jQuery $.get?
-    maybe populate an array first, then pass array of them to marker placer function?
-
-  3. this feels a bit hacky. maybe just use something like:
-    https://github.com/lvoogdt/Leaflet.awesome-markers
-    as suggested on the stackoverflow post
-
-##### trying to get it working on bl.ocks...
-
-1. http://bl.ocks.org/FergusDevelopmentLLC/3a3b79df9c2700d9fe448945e40d9f83
+3. $.get svg code from svg in subfolder doesn't work on bl.ocks
 
 #### URLS
 
